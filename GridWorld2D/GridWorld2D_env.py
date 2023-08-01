@@ -7,18 +7,22 @@ import time
 import cv2
 from matplotlib import pyplot as plt
 
-grid_rows = 4
-grid_cols = 4
+grid_rows = 8
+grid_cols = 8
 start_location = (0,0)
-end_location = (3,3)
-obstacles = ((1,0),(2,3))
+end_location = (7,7)
+obstacles = ((1,0),(1,1),(1,2),(1,3),(2,3),(4,4),(4,5),(4,6),(4,7))
 max_steps = 100
 
 actions = {
     0 : (0,1),  # North
     1 : (0,-1), # South
     2 : (1,0),  # East
-    3 : (-1,0)  # West
+    3 : (-1,0), # West
+    4 : (1,1),  # North-East
+    5 : (1,-1), # North-West
+    6 : (-1,1), # South-East
+    7 : (-1,-1) # South-West
 }
 
 class State():
@@ -26,9 +30,9 @@ class State():
     def __init__(self):
 
         #Actions we can take: N, S, E, W
-        self.action_space = Discrete(4)
+        self.action_space = Discrete(len(actions))
         # 2D Grid
-        self.observation_space = Discrete(16)
+        self.observation_space = Discrete(grid_rows*grid_cols)
         # Set start location
         self.state = start_location
         # Set max steps
@@ -78,21 +82,21 @@ class State():
     
     def render(self):
 
-        image = np.ones((400, 400, 3), dtype=np.uint8) * 255
+        image = np.ones((grid_rows*100, grid_cols*100, 3), dtype=np.uint8) * 255
 
         #image = cv2.putText(image,"Hello", org=(100,100),fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1 ,color=(0,0,0), thickness=2)
 
         h, w, _ = image.shape
-        rows, cols = (4,4)
-        dy, dx = h / rows, w / cols
+        #rows, cols = (4,4)
+        dy, dx = h / grid_rows, w / grid_cols
 
         # draw vertical lines
-        for x in np.linspace(start=dx, stop=w-dx, num=cols-1):
+        for x in np.linspace(start=dx, stop=w-dx, num=grid_cols-1):
             x = int(round(x))
             cv2.line(image, (x, 0), (x, h), color=(0, 0, 0), thickness=1)
 
         # draw horizontal lines
-        for y in np.linspace(start=dy, stop=h-dy, num=rows-1):
+        for y in np.linspace(start=dy, stop=h-dy, num=grid_rows-1):
             y = int(round(y))
             cv2.line(image, (0, y), (w, y), color=(0, 0, 0), thickness=1)
 
@@ -125,7 +129,7 @@ class State():
             thickness=-1)
         
         cv2.imshow("GridEnv2D", image)
-        if cv2.waitKey(100) & 0xFF == ord('q'):
+        if cv2.waitKey(200) & 0xFF == ord('q'):
             return
     def reset(self):
         self.state = start_location

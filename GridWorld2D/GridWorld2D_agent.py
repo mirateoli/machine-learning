@@ -14,7 +14,7 @@ class Agent:
     def __init__(self):
         self.states = []
         self.State = State()
-        self.actions = [0, 1, 2, 3]
+        self.actions = list(actions.keys())
         self.lr = 0.2
         self.exp_rate = 0.9
         self.decay_gamma = 0.9   
@@ -58,7 +58,10 @@ class Agent:
             score = 0
             moves = 0
             locations = []
-            self.exp_rate -= 0.005
+            max_epsilon = 1.0             # Exploration probability at start
+            min_epsilon = 0.05            # Minimum exploration probability 
+            decay_rate = 0.0005            # Exponential decay rate for exploration prob
+            self.exp_rate = max_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate*episode)
             
             while not done:
                 #self.State.render()
