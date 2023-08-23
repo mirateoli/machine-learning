@@ -14,17 +14,21 @@ cube_height = 6
 start_location = (0,0,0)
 end_location = (5,5,5)
 
-obstacles = ()
+obstacles = ((5,5,4),(5,4,5))
 
-max_steps = 1000
+max_steps = 5000
 
 actions = {
     0 : (0,1,0),  # North
     1 : (0,-1,0), # South
     2 : (1,0,0),  # East
     3 : (-1,0,0), # West
-    4 : (0,0,1),  # Up
-    5 : (0,0,-1)  # Down
+    4 : (1,1,0),  # North-East
+    5 : (1,-1,0), # North-West
+    6 : (-1,1,0), # South-East
+    7 : (-1,-1,0), # South-West
+    8 : (0,0,1),  # Up
+    9 : (0,0,-1)  # Down
 }
 
 class State():
