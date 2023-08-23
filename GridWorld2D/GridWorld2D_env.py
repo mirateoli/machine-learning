@@ -11,10 +11,11 @@ render_scale = 30  # MUST BE EVEN INTEGER
 
 grid_rows = 10
 grid_cols = 10
-start_location = (0,0)
-end_location = (9,9)
-obstacles = ((1,0),(1,1),(1,2),(1,3),(2,3),(4,4),(4,5),(4,6),(4,7))
-max_steps = 100
+start_location = (3,8)
+end_location = (8,3)
+obstacles = ((2,5),(2,6),(2,7),(3,5),(3,6),(3,7),(4,5),(4,6),(4,7),
+             (5,2),(5,3),(6,2),(6,3),(7,2),(7,3))
+max_steps = 200
 
 actions = {
     0 : (0,1),  # North
@@ -40,6 +41,9 @@ class State():
         # Set max steps
         self.max_steps = max_steps
         print("Agent start location is:",self.state)
+        self.obstacles = obstacles
+        self.xlim = grid_rows
+        self.ylim = grid_cols
 
     def check(self):
         print(self.state[0])

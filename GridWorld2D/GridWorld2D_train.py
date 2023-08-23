@@ -17,8 +17,18 @@ print("Learned Q-values ... \n")
 print(ag.Qvalues)
 ag.test(1)
 
-x,y = np.array(ag.final_route).T
-plt.plot(x,y)
+
+posx,posy = np.array(ag.final_route).T
+obsx,obsy = np.array(ag.State.obstacles).T
+fig = plt.figure()
+ax1 = fig.add_subplot()
+
+ax1.plot(posx,posy,linewidth=4)
+ax1.scatter(obsx,obsy,s=800,c='r',marker='s')
+ax1.set_aspect('equal',adjustable='box')
+
+plt.xlim([0,ag.State.xlim])
+plt.ylim([0,ag.State.ylim])
 plt.show()
 
 

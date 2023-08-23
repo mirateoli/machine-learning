@@ -60,9 +60,9 @@ class Agent:
             moves = 0
             locations = []
             max_epsilon = 1.0             # Exploration probability at start
-            min_epsilon = 0.05            # Minimum exploration probability 
-            decay_rate = 0.0005            # Exponential decay rate for exploration prob
-            self.exp_rate = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate*episode)
+            min_epsilon = 0.3            # Minimum exploration probability 
+            decay_rate = (max_epsilon - min_epsilon) / episodes            # Exponential decay rate for exploration prob
+            self.exp_rate = -decay_rate*episode + 1
             
             while not done:
                 #self.State.render()
