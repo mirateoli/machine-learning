@@ -7,16 +7,17 @@ import time
 import cv2
 from matplotlib import pyplot as plt
 
-cube_rows = 6
-cube_cols = 6
-cube_height = 6
+cube_rows = 10
+cube_cols = 10
+cube_height = 10
 
-start_location = (0,0,0)
-end_location = (5,5,5)
+start_location = (2,3,3)
+end_location = (7,7,6)
 
-obstacles = ((5,5,4),(5,4,5))
+obstacles = ((2,3,2),(2,4,2),(2,5,2),(2,3,3),(2,4,3),(2,5,3), \
+             (7,7,7),(7,7,6),(7,7,5))
 
-max_steps = 5000
+max_steps = 10000
 
 actions = {
     0 : (0,1,0),  # North
@@ -28,7 +29,24 @@ actions = {
     6 : (-1,1,0), # South-East
     7 : (-1,-1,0), # South-West
     8 : (0,0,1),  # Up
-    9 : (0,0,-1)  # Down
+    9 : (0,0,-1),  # Down
+    10: (0,1,1),   # Up-North
+    11: (0,1,-1),  # Down-North
+    12: (0,-1,1),   # Up-South
+    13: (0,-1,-1),  # Down-South
+    14: (1,0,1),   # Up-East
+    15: (1,0,-1),  # Down-East
+    16: (-1,0,1),   # Up-West
+    17: (-1,0,-1),  # Down-West
+    18: (1,1,1),   # Up-North-East
+    19: (1,1,-1),  # Down-North-East
+    20: (-1,1,1),   # Up-North-West
+    21: (-1,1,-1),  # Down-North-West
+    22: (1,-1,1),   # Up-South-East
+    23: (1,-1,-1),  # Down-South-East
+    24: (-1,-1,1),   # Up-South-West
+    25: (-1,-1,-1),  # Down-South-West
+    
 }
 
 class State():
@@ -72,7 +90,8 @@ class State():
             # print("Agent travelled through obstacle.")
 
         else:
-            self.state = self.state_new      
+            self.state = self.state_new   
+            reward = -1   
             # print("Agent moved to new position")
 
 
@@ -80,7 +99,7 @@ class State():
 
         # Check if Agent reached goal location
         if self.state == end_location:
-            reward = 1
+            reward = 100
             done = True
         # check if max steps reached
         elif self.max_steps <= 0:
