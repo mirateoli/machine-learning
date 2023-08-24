@@ -6,7 +6,7 @@ ag = Agent()
 print("initial Q-values ... \n")
 print(ag.Qvalues)
 
-ag.train(5000)
+ag.train(8000)
 #print("latest Q-values ... \n")
 # print(ag.Qvalues)
 # print("Best score:",ag.max_score)
@@ -23,19 +23,20 @@ ag.test(1)
 
 force_float = False
 obs_data = pv.PolyData(pv.wrap(np.array(ag.State.obstacles,dtype=float)))
-# pdata['orig_sphere'] = np.arange(100)
 
-# create many spheres from the point cloud
-box = pv.Box(bounds=(-0.5, 0.5, -0.5, 0.5, -0.5, 0.5))
+
+
+box = pv.Box(bounds=(-0.4, 0.4, -0.4, 0.4, -0.4, 0.4))
 obs_mesh = obs_data.glyph(scale=False, geom=box, orient=False)
 
 print(ag.final_route)
 route_data = ag.final_route
+route_data.insert(0,ag.State.start_location)
 print(route_data)
 
 edges = np.empty((0,2),dtype=int)
 
-for i in range(len(route_data)):
+for i in range(len(route_data)-1):
     pair = [i, i + 1]
     edges = np.vstack((edges, pair))
 

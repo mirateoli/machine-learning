@@ -11,9 +11,9 @@ cube_rows = 10
 cube_cols = 10
 cube_height = 10
 
-start_location = (2,3,3)
+start_location = (2,3,2)
 end_location = (7,7,6)
-
+#(2,3,2),(2,4,2),
 obstacles = ((2,3,2),(2,4,2),(2,5,2),(2,3,3),(2,4,3),(2,5,3), \
              (7,7,7),(7,7,6),(7,7,5))
 
@@ -60,6 +60,7 @@ class State():
         # Set start location
         self.state = start_location
         # Set max steps
+        self.start_location = start_location
         self.max_steps = max_steps
         print("Agent start location is:",self.state)
         self.obstacles = obstacles
