@@ -70,7 +70,7 @@ class Agent:
                 # print("Step", moves)
                 action = self.chooseAction()
                 # take action
-                n_state, reward, done, info = self.State.step(action)
+                n_state, reward, done, info, moved = self.State.step(action)
                 # print(n_state)
                 old_value = self.Qvalues[state][action]
                 next_max = max(self.Qvalues[n_state].values())
@@ -78,7 +78,8 @@ class Agent:
                 new_value = (1 - self.lr) * old_value + self.lr *(reward + self.decay_gamma * next_max)
                 self.Qvalues[state][action] = new_value
                 state = n_state
-                self.State.action_old = action
+                if moved:
+                    self.State.action_old = action
                 locations.append(n_state)
                 score += reward
                 moves += 1
@@ -116,9 +117,11 @@ class Agent:
                 action = self.chooseAction()
                 #print("Chosen action:",action,type(action))
                 print("current position {} action {}".format(state, action))
-                n_state, reward, done, info = self.State.step(action)
+                n_state, reward, done, info, moved = self.State.step(action)
                 print(n_state)                
                 state = n_state
+                if moved:
+                    self.State.action_old = action
                 locations.append(n_state)
                 score += reward
                 moves += 1

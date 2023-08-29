@@ -11,11 +11,11 @@ cube_rows = 10
 cube_cols = 10
 cube_height = 10
 
-start_location = (2,3,2)
-end_location = (7,5,3)
+start_location = (9,5,3)
+end_location = (2,3,2)
 
 obstacles = ((2,3,2),(2,4,2),(2,5,2),(2,3,3),(2,4,3),(2,5,3), \
-		(7,3,2),(7,4,2),(7,5,2),(7,3,3),(7,4,3),(7,5,3))
+		(9,3,2),(9,4,2),(9,5,2),(9,3,3),(9,4,3),(9,5,3))
 
 max_steps = 10000
 
@@ -67,7 +67,7 @@ class State():
         self.xlim = cube_rows
         self.ylim = cube_cols
         self.zlim = cube_height
-        self.action_old = False
+        self.action_old = None
 
     def check(self):
         print(self.state[0])
@@ -80,11 +80,10 @@ class State():
         reward = 0
 
         # Check if agent created bend in path
-        if self.action_old != False:
+        if self.action_old != None:
             if any(np.cross(actions[self.action_old], actions[action])) != 0:
                 self.bends += 1
-                reward += -11
-
+                reward += -1
 
 
         # check if Agent moved out of bounds
@@ -92,16 +91,19 @@ class State():
             self.state_new[1] not in range(0,cube_cols) or \
             self.state_new[2] not in range(0,cube_height):
             self.state = self.state
+            self.moved = False
             # print("Agent moved out of bounds. Position reset.")
 
         # check if Agent travelled through an obstacle
         elif self.state_new in obstacles:
             self.state = self.state_new 
+            self.moved = True
             reward += -11
             # print("Agent travelled through obstacle.")
 
         else:
-            self.state = self.state_new   
+            self.state = self.state_new
+            self.moved = True   
             reward += -1   
             # print("Agent moved to new position")
 
@@ -119,7 +121,7 @@ class State():
             done = False
 
         info = {}
-        return self.state, reward, done, info
+        return self.state, reward, done, info, self.moved
     
     # def render(self):
     

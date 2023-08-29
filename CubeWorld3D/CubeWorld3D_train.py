@@ -6,7 +6,7 @@ ag = Agent()
 print("initial Q-values ... \n")
 print(ag.Qvalues)
 
-ag.train(1000)
+ag.train(10000)
 #print("latest Q-values ... \n")
 # print(ag.Qvalues)
 # print("Best score:",ag.max_score)
