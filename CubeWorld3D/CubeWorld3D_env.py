@@ -12,10 +12,10 @@ cube_cols = 10
 cube_height = 10
 
 start_location = (2,3,2)
-end_location = (7,7,6)
-#(2,3,2),(2,4,2),
+end_location = (7,5,3)
+
 obstacles = ((2,3,2),(2,4,2),(2,5,2),(2,3,3),(2,4,3),(2,5,3), \
-             (7,7,7),(7,7,6),(7,7,5))
+		(7,3,2),(7,4,2),(7,5,2),(7,3,3),(7,4,3),(7,5,3))
 
 max_steps = 10000
 
@@ -24,28 +24,28 @@ actions = {
     1 : (0,-1,0), # South
     2 : (1,0,0),  # East
     3 : (-1,0,0), # West
-    4 : (1,1,0),  # North-East
-    5 : (1,-1,0), # North-West
-    6 : (-1,1,0), # South-East
-    7 : (-1,-1,0), # South-West
+    # 4 : (1,1,0),  # North-East
+    # 5 : (1,-1,0), # North-West
+    # 6 : (-1,1,0), # South-East
+    # 7 : (-1,-1,0), # South-West
     8 : (0,0,1),  # Up
     9 : (0,0,-1),  # Down
-    10: (0,1,1),   # Up-North
-    11: (0,1,-1),  # Down-North
-    12: (0,-1,1),   # Up-South
-    13: (0,-1,-1),  # Down-South
-    14: (1,0,1),   # Up-East
-    15: (1,0,-1),  # Down-East
-    16: (-1,0,1),   # Up-West
-    17: (-1,0,-1),  # Down-West
-    18: (1,1,1),   # Up-North-East
-    19: (1,1,-1),  # Down-North-East
-    20: (-1,1,1),   # Up-North-West
-    21: (-1,1,-1),  # Down-North-West
-    22: (1,-1,1),   # Up-South-East
-    23: (1,-1,-1),  # Down-South-East
-    24: (-1,-1,1),   # Up-South-West
-    25: (-1,-1,-1),  # Down-South-West
+    # 10: (0,1,1),   # Up-North
+    # 11: (0,1,-1),  # Down-North
+    # 12: (0,-1,1),   # Up-South
+    # 13: (0,-1,-1),  # Down-South
+    # 14: (1,0,1),   # Up-East
+    # 15: (1,0,-1),  # Down-East
+    # 16: (-1,0,1),   # Up-West
+    # 17: (-1,0,-1),  # Down-West
+    # 18: (1,1,1),   # Up-North-East
+    # 19: (1,1,-1),  # Down-North-East
+    # 20: (-1,1,1),   # Up-North-West
+    # 21: (-1,1,-1),  # Down-North-West
+    # 22: (1,-1,1),   # Up-South-East
+    # 23: (1,-1,-1),  # Down-South-East
+    # 24: (-1,-1,1),   # Up-South-West
+    # 25: (-1,-1,-1),  # Down-South-West
     
 }
 
@@ -67,6 +67,7 @@ class State():
         self.xlim = cube_rows
         self.ylim = cube_cols
         self.zlim = cube_height
+        self.action_old = False
 
     def check(self):
         print(self.state[0])
@@ -74,8 +75,17 @@ class State():
     def step(self, action):
 
         # Apply action
+
         self.state_new = tuple([sum(x) for x in zip(self.state,actions[action])])
         reward = 0
+
+        # Check if agent created bend in path
+        if self.action_old != False:
+            if any(np.cross(actions[self.action_old], actions[action])) != 0:
+                self.bends += 1
+                reward += -11
+
+
 
         # check if Agent moved out of bounds
         if self.state_new[0] not in range(0,cube_rows) or \
@@ -87,12 +97,12 @@ class State():
         # check if Agent travelled through an obstacle
         elif self.state_new in obstacles:
             self.state = self.state_new 
-            reward = -11
+            reward += -11
             # print("Agent travelled through obstacle.")
 
         else:
             self.state = self.state_new   
-            reward = -1   
+            reward += -1   
             # print("Agent moved to new position")
 
 
@@ -115,4 +125,5 @@ class State():
     
     def reset(self):
         self.state = start_location
+        self.bends = 0
         self.max_steps = max_steps

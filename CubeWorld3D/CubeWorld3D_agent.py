@@ -78,6 +78,7 @@ class Agent:
                 new_value = (1 - self.lr) * old_value + self.lr *(reward + self.decay_gamma * next_max)
                 self.Qvalues[state][action] = new_value
                 state = n_state
+                self.State.action_old = action
                 locations.append(n_state)
                 score += reward
                 moves += 1
@@ -85,6 +86,7 @@ class Agent:
             print('Episode:{} Score:{} Moves:{} Eps Greedy:{}'.format(episode,\
                                              score, moves, self.exp_rate))
             self.scores.append(score)
+            print('Bends:',self.State.bends)
             if score > self.max_score:
                     self.max_score = score
                     self.best_locations = locations
@@ -106,7 +108,7 @@ class Agent:
             done = False
             score = 0
             moves = 0
-            locations = []
+            locations = [self.State.start_location]
             
             while not done:
                 # self.State.render()
@@ -122,6 +124,7 @@ class Agent:
                 moves += 1
             print('Episode:{} Score:{} Moves:{} Locations:{} Eps Greedy:{}'.format(episode,\
                                              score, moves, locations,self.exp_rate))
+            print('Bends:',self.State.bends)
             self.scores.append(score)
             if score > self.max_score:
                     self.max_score = score
