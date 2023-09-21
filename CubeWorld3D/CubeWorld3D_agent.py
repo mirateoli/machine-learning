@@ -15,7 +15,7 @@ class Agent:
         self.states = []
         self.State = State()
         self.actions = list(actions.keys())
-        self.lr = 0.2
+        self.lr = 0.7
         self.exp_rate = 0.9
         self.decay_gamma = 0.9   
 

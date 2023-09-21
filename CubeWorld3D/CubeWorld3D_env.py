@@ -8,14 +8,15 @@ import cv2
 from matplotlib import pyplot as plt
 
 cube_rows = 10
-cube_cols = 10
-cube_height = 10
+cube_cols = 7
+cube_height = 3
 
-start_location = (9,5,3)
-end_location = (2,3,2)
+start_location = (9,5,0)
+end_location = (2,3,0)
 
-obstacles = ((2,3,2),(2,4,2),(2,5,2),(2,3,3),(2,4,3),(2,5,3), \
-		(9,3,2),(9,4,2),(9,5,2),(9,3,3),(9,4,3),(9,5,3))
+obstacles = ((2,3,0),(2,4,0),(2,5,0),(2,3,1),(2,4,1),(2,5,1), \
+		(9,3,0),(9,4,0),(9,5,0),(9,3,0),(9,4,0),(9,5,0), \
+        (6,0,0),(6,1,0),(6,2,0),(6,3,0),(6,4,0),(6,5,0),(6,6,0))
 
 max_steps = 10000
 
@@ -24,20 +25,20 @@ actions = {
     1 : (0,-1,0), # South
     2 : (1,0,0),  # East
     3 : (-1,0,0), # West
-    # 4 : (1,1,0),  # North-East
-    # 5 : (1,-1,0), # North-West
-    # 6 : (-1,1,0), # South-East
-    # 7 : (-1,-1,0), # South-West
+    4 : (1,1,0),  # North-East
+    5 : (1,-1,0), # North-West
+    6 : (-1,1,0), # South-East
+    7 : (-1,-1,0), # South-West
     8 : (0,0,1),  # Up
     9 : (0,0,-1),  # Down
-    # 10: (0,1,1),   # Up-North
-    # 11: (0,1,-1),  # Down-North
-    # 12: (0,-1,1),   # Up-South
-    # 13: (0,-1,-1),  # Down-South
-    # 14: (1,0,1),   # Up-East
-    # 15: (1,0,-1),  # Down-East
-    # 16: (-1,0,1),   # Up-West
-    # 17: (-1,0,-1),  # Down-West
+    10: (0,1,1),   # Up-North
+    11: (0,1,-1),  # Down-North
+    12: (0,-1,1),   # Up-South
+    13: (0,-1,-1),  # Down-South
+    14: (1,0,1),   # Up-East
+    15: (1,0,-1),  # Down-East
+    16: (-1,0,1),   # Up-West
+    17: (-1,0,-1),  # Down-West
     # 18: (1,1,1),   # Up-North-East
     # 19: (1,1,-1),  # Down-North-East
     # 20: (-1,1,1),   # Up-North-West
@@ -98,7 +99,7 @@ class State():
         elif self.state_new in obstacles:
             self.state = self.state_new 
             self.moved = True
-            reward += -11
+            reward += -50
             # print("Agent travelled through obstacle.")
 
         else:

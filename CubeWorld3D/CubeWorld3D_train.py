@@ -1,24 +1,31 @@
 from CubeWorld3D_agent import *
 from CubeWorld3D_env import *
 import pyvista as pv
+import time
 
 ag = Agent()
-print("initial Q-values ... \n")
-print(ag.Qvalues)
+# print("initial Q-values ... \n")
+# print(ag.Qvalues)
 
-ag.train(10000)
+train_start = time.time()
+
+ag.train(20000)
 #print("latest Q-values ... \n")
 # print(ag.Qvalues)
 # print("Best score:",ag.max_score)
 # print("Best route:",ag.best_locations)
+train_end = time.time()
 
+print("Training time:",(train_end-train_start),"seconds")
 
 ag.exp_rate = 0
-print("Learned Q-values ... \n")
-print(ag.Qvalues)
+# print("Learned Q-values ... \n")
+# print(ag.Qvalues)
+
+test_start = time.time()
 ag.test(1)
-
-
+test_end = time.time()
+print("Testing time:",(test_end-test_start),"seconds")
 ###### PYVISTA VISUALIZING
 
 force_float = False
